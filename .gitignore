@@ -34,6 +34,7 @@
 # Build directories
 */build/*
 */build-*/*
+build/*
 
 # Qtcreator files
 *.user

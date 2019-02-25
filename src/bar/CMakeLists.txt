@@ -156,12 +156,15 @@ target_link_libraries( ${LIBRARY_NAME} ${LINKED_TARGETS} )
 ####
 # Properties of targets
 
+string(TOUPPER "${LIBRARY_NAME}" LIBRARY_NAME_UPPERCASE)
+string(TOUPPER "${PROJECT_NAMESPACE}" PROJECT_NAMESPACE_UPPERCASE)
+
 # Add definitions for targets
 # Values:
-#   * Debug: -DFOO_BAR_DEBUG=1
-#   * Release: -DFOO_BAR_DEBUG=0
-#   * other: -DFOO_BAR_DEBUG=0
-target_compile_definitions(bar PUBLIC "FOO_BAR_DEBUG=$<CONFIG:Debug>")
+#   * Debug:   -DFOO_CAT_DEBUG=1
+#   * Release: -DFOO_CAT_DEBUG=0
+#   * other:   -DFOO_CAT_DEBUG=0
+target_compile_definitions(${LIBRARY_NAME} PUBLIC "${PROJECT_NAMESPACE_UPPERCASE}_${LIBRARY_NAME_UPPERCASE}_DEBUG=$<CONFIG:Debug>")
 
 # Generate:
 #   * ${CMAKE_CURRENT_BINARY_DIR}/generated_headers/foo/BAR_EXPORT.h with BAR_EXPORT

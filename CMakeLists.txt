@@ -10,12 +10,12 @@
 #
 # This Lists file was modified from https://github.com/forexample/package-example
 #
-# This file creates project 'Foo' with two library targets 'bar' and 'baz'.
-# Target 'bar' depends on 'baz'. After installation this project can be found
+# This file creates project 'Foo' with two library targets 'bar' and 'cat'.
+# Target 'cat' depends on 'bar'. After installation this project can be found
 # by 'find_package(... CONFIG)' command:
 #
-#    find_package(Foo CONFIG REQUIRED)
-#    target_link_libraries(... Foo::bar)
+#    find_package(foo CONFIG REQUIRED)
+#    target_link_libraries(... foo::bar)
 #
 # Note that requirements propagated automatically, for example:
 #   * Foo::baz linked automatically
