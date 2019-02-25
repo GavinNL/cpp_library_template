@@ -73,6 +73,8 @@ ENDFOREACH()
 ################################################################################
 
 
+enable_testing()
+add_subdirectory(test)
 
 
 ################################################################################
@@ -129,7 +131,7 @@ configure_package_config_file(
    EXPORT
        "${TARGETS_EXPORT_NAME}"
    LIBRARY  DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-   ARCHIVE  DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+   ARCHIVE  DESTINATION "${CMAKE_INSTALL_L8IBDIR}"
    RUNTIME  DESTINATION "${CMAKE_INSTALL_BINDIR}"
    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   )
