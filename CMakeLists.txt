@@ -66,7 +66,6 @@ ENDMACRO()
 SUBDIRLIST(sub_modules "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 FOREACH(subdir ${sub_modules})
- #message( "==== ${subdir} ====" )
  add_subdirectory(src/${subdir})
 ENDFOREACH()
 
@@ -131,7 +130,7 @@ configure_package_config_file(
    EXPORT
        "${TARGETS_EXPORT_NAME}"
    LIBRARY  DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-   ARCHIVE  DESTINATION "${CMAKE_INSTALL_L8IBDIR}"
+   ARCHIVE  DESTINATION "${CMAKE_INSTALL_LIBDIR}"
    RUNTIME  DESTINATION "${CMAKE_INSTALL_BINDIR}"
    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   )
