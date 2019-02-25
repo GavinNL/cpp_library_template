@@ -22,20 +22,50 @@ cmake_minimum_required(VERSION 3.13) # GENERATOR_IS_MULTI_CONFIG
 #
 #  You may modify these variables.
 ################################################################################
-project(bar
+#-------------------------------------------------
+# Use the folder name as the library/project name.
+# If you do not want to do that, set LIBRARY_NAME
+# to something else.
+#-------------------------------------------------
+get_filename_component(LIBRARY_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE " " "_" LIBRARY_NAME ${LIBRARY_NAME})
+#-------------------------------------------------
+
+project(${LIBRARY_NAME}
         VERSION
             1.2.3)
 
-# You should list the source files here. You could automatically GLOB
-# the source fils, but it's not considered best practice
-set( PROJECT_SOURCE_FILES  bar.cpp)
 
+#-------------------------------------------------
 # The base path where the include headers for this library will be stored relative
 # to the root include path.
 # For example: this project is named "bar"
 #           the include path would be include/foo/bar
 #
-set( PROJECT_BASE_INCLUDE_PATH  ${PROJECT_NAMESPACE}/${PROJECT_NAME} )
+#-------------------------------------------------
+set( PROJECT_BASE_INCLUDE_PATH  ${PROJECT_NAMESPACE}/${LIBRARY_NAME} )
+#-------------------------------------------------
+
+#-------------------------------------------------
+# The target name that other libraries/execs will
+# link to. it's okay to leave it as it us.
+#-------------------------------------------------
+set( ALIAS_TARGET_NAME   ${PROJECT_NAMESPACE}::${LIBRARY_NAME} )
+#-------------------------------------------------
+
+#-------------------------------------------------
+# Set any linked targets we need. This library
+# depends on foo::bar
+#-------------------------------------------------
+set( LINKED_TARGETS    )
+#-------------------------------------------------
+
+
+# You should list the source files here. You could automatically GLOB
+# the source files, but it's not considered best practice
+set( PROJECT_SOURCE_FILES  bar.cpp)
+
+
 ################################################################################
 
 
@@ -106,14 +136,7 @@ endif()
 
 ################################################################################
 ################################################################################
-set(ALIAS_TARGET_NAME   ${PROJECT_NAMESPACE}::${PROJECT_NAME} )
 
-
-# Get the name of the Project
-get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
-string(REPLACE " " "_" PROJECT_FOLDER_NAME ${ProjectId})
-
-message("Building Library: ${PROJECT_FOLDER_NAME}")
 ################################################################################
 
 
@@ -122,9 +145,11 @@ message("Building Library: ${PROJECT_FOLDER_NAME}")
 # Create Create the target library and its alias.
 ################################################################################
 
-add_library( ${PROJECT_FOLDER_NAME} ${PROJECT_SOURCE_FILES} )
-add_library( ${ALIAS_TARGET_NAME}  ALIAS  ${PROJECT_NAME}   )
+add_library( ${LIBRARY_NAME} ${PROJECT_SOURCE_FILES} )
+add_library( ${ALIAS_TARGET_NAME}  ALIAS  ${LIBRARY_NAME}   )
 
+
+target_link_libraries( ${LIBRARY_NAME} ${LINKED_TARGETS} )
 ################################################################################
 
 
@@ -148,7 +173,7 @@ target_compile_definitions(bar PUBLIC "FOO_BAR_DEBUG=$<CONFIG:Debug>")
 set(generated_headers "${CMAKE_CURRENT_BINARY_DIR}/generated_headers")
 
 
-string(TOUPPER "${PROJECT_NAME}" export_file_name)
+string(TOUPPER "${LIBRARY_NAME}" export_file_name)
 
 
 # set the export file path. This is used mostly by MVSC
@@ -156,7 +181,7 @@ string(TOUPPER "${PROJECT_NAME}" export_file_name)
 set( EXPORT_FILE_PATH  "${generated_headers}/${PROJECT_BASE_INCLUDE_PATH}/${export_file_name}_EXPORT.h" )
 
 include(GenerateExportHeader)
-generate_export_header( ${PROJECT_NAME}
+generate_export_header( ${LIBRARY_NAME}
                             EXPORT_FILE_NAME    ${EXPORT_FILE_PATH}
                     )
 
@@ -167,7 +192,7 @@ generate_export_header( ${PROJECT_NAME}
 #   * header location in project: ${CMAKE_CURRENT_BINARY_DIR}/generated_headers/NAMESPACE/LIBRARY_NAME/LIBRARY_NAME_export.h
 #   * the exports header can be included by: `#include <NAMESPACE/LIBRARY_NAME/LIBRARY_NAME_export.h>`
 target_include_directories(
-    ${PROJECT_NAME}
+    ${LIBRARY_NAME}
         PUBLIC
             "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
             "$<BUILD_INTERFACE:${generated_headers}>"
