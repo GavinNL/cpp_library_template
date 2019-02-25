@@ -7,6 +7,7 @@ build-gcc:
     tags:
       - linux
     before_script:
+      - echo $USER    ---   $HOME
       - sudo apt update
       - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
       - wget https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
@@ -14,6 +15,7 @@ build-gcc:
       - tar -xvzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
       - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
     script:
+      - echo $USER    ---   $HOME
       - mkdir -p build && cd build
       - cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/local
       - cmake --build .
