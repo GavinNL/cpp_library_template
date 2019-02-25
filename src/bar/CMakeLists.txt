@@ -5,15 +5,11 @@
 #    find_package(Foo CONFIG REQUIRED)
 #    target_link_libraries(... Foo::bar)
 #
-# Note that requirements propagated automatically, for example:
-#   * Foo::baz linked automatically
-#   * <prefix>/include added to header search path
-#   * FOO_BAZ_DEBUG=1/FOO_BAR_DEBUG=1 added on Debug
-#   * FOO_BAZ_DEBUG=0/FOO_BAR_DEBUG=0 added on other configurations
+
 
 ####
 # Set minimum version of CMake.
-cmake_minimum_required(VERSION 3.13) # GENERATOR_IS_MULTI_CONFIG
+cmake_minimum_required(VERSION 3.13)
 
 ################################################################################
 # Set variables:
