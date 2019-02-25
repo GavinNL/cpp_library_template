@@ -6,21 +6,9 @@
 
 namespace foo {
 
-class BAR_EXPORT bar {
- public:
-  static void say() {
-#if (FOO_BAR_DEBUG)
-    const char* m = "Baz.hpp (Debug)";
-#else
-    const char* m = "Baz.hpp (Not debug)";
-#endif
-    std::cout << m << std::endl;
-    cpp_say();
-  }
 
- private:
-  static void cpp_say();
-};
+BAR_EXPORT void bar();
+
 
 } // namespace foo
 

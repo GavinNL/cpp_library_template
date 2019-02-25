@@ -6,20 +6,16 @@
 
 namespace foo {
 
-class CAT_EXPORT cat {
- public:
-  static void say() {
-#if (FOO_BAR_DEBUG)
-    const char* m = "Baz.hpp (Debug)";
-#else
-    const char* m = "Baz.hpp (Not debug)";
-#endif
-    std::cout << m << std::endl;
-    cpp_say();
-  }
 
- private:
-  static void cpp_say();
+
+class CAT_EXPORT cat
+{
+    public:
+        cat();
+        ~cat();
+
+        void call_bar();
+
 };
 
 } // namespace foo
