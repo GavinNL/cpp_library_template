@@ -61,8 +61,8 @@ set( LINKED_TARGETS  foo::bar )
 # definitions are propagated to any targets that link
 # to this library.
 #-------------------------------------------------
-set( PUBLIC_COMPILED_DEFINITIONS  -DCAT_DEFINE)
-set( PRIVATE_COMPILED_DEFINITIONS  )
+set( PUBLIC_COMPILE_DEFINITIONS  -DCAT_DEFINE)
+set( PRIVATE_COMPILE_DEFINITIONS  )
 #-------------------------------------------------
 
 
@@ -156,8 +156,8 @@ add_library( ${ALIAS_TARGET_NAME}  ALIAS  ${LIBRARY_NAME}   )
 
 target_link_libraries( ${LIBRARY_NAME} ${LINKED_TARGETS} )
 
-target_compile_definitions( ${LIBRARY_NAME} PUBLIC ${PUBLIC_COMPILED_DEFINITIONS})
-target_compile_definitions( ${LIBRARY_NAME} PRIVATE ${PUBLIC_COMPILED_DEFINITIONS})
+target_compile_definitions( ${LIBRARY_NAME} PUBLIC ${PUBLIC_COMPILE_DEFINITIONS})
+target_compile_definitions( ${LIBRARY_NAME} PRIVATE ${PUBLIC_COMPILE_DEFINITIONS})
 
 ################################################################################
 
