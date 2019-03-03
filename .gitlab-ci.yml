@@ -29,7 +29,7 @@ stages:
       - echo $USER    ---   $HOME
       - echo Working directory $PWD
       - mkdir -p build && cd build
-      - cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+      - cmake .. -DCMAKE_INSTALL_PREFIX=artifacts/${CI_JOB_NAME}
       - cmake --build .
       - ctest
       - sudo cmake --build . --target install
@@ -59,6 +59,31 @@ build-gcc8:
     <<: *job_definition           # Merge the contents of the 'job_definition' alias
     image: conanio/gcc8
 
+build-clang60:
+    <<: *job_definition
+    image: build-conanio/clang60
+
+build-clang40:
+    <<: *job_definition
+    image: build-conanio/clang40
+
+build-clang50:
+    <<: *job_definition
+    image: build-conanio/clang50
+
+build-clang7:
+    <<: *job_definition
+    image: build-conanio/clang7
+
+build-clang39:
+    <<: *job_definition
+    image: build-conanio/clang39
+
+
+###############################################################################
+# The test package stage tests whether the different Conan generators work
+# correctly with the
+###############################################################################
 .test_package: &test_package_definition
     image: conanio/gcc7
     stage: test
@@ -109,6 +134,6 @@ test-package-gcc8:
     <<: *test_package_definition           # Merge the contents of the 'job_definition' alias
     image: conanio/gcc8
 
-test-package-gcc7:
+test-package-clang60:
     <<: *test_package_definition           # Merge the contents of the 'job_definition' alias
-    image: conanio/gcc7
+    image: conanio/clang60
