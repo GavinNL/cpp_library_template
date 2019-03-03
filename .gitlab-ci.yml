@@ -33,6 +33,7 @@ build-gcc:
       - ctest
       - sudo cmake --build . --target install
       - cd ..
+      - conan user -p demo demo -r=local
       - conan create . template/testing
       - conan upload cpp_library_template* -r=local -c
       - conan search "*" -r=local
