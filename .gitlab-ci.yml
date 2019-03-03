@@ -35,8 +35,8 @@ build-gcc:
       - cd ..
       - conan user -p demo demo -r=local
       - conan create . template/testing
-      - conan upload cpp_library_template* -r=local -c
-      - conan search "*" -r=local --all
+      - conan upload cpp_library_template* -r=local -c --all
+      - conan search "*" -r=local
     artifacts:
       paths:
         - build/local/*
