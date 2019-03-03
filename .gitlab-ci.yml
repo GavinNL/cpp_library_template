@@ -2,11 +2,9 @@ stages:
 - build
 - test
 
-build-gcc7:
+.build_template: &job_definition
     image: conanio/gcc7
     stage: build
-#    tags:
-#      - linux
     before_script:
       - env
       - sudo apt update
@@ -45,11 +43,30 @@ build-gcc7:
         - artifacts/*
       expire_in: 1 week
 
-test_package:
+build-gcc5:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc5
+
+build-gcc6:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc6
+
+build-gcc7:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc7
+
+build-gcc8:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc8
+
+.test_package: &job_definition
     image: conanio/gcc7
     stage: test
     dependencies:
+      - build-gcc5
+      - build-gcc6
       - build-gcc7
+      - build-gcc8
 
     before_script:
       - sudo apt update
