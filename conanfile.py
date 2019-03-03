@@ -13,13 +13,8 @@ class CppLibraryTemplateConan(ConanFile):
     generators = "cmake"
     exports_sources = "*"
 
-    options = {
-        "shared": [True, False]
-        }
-
-    default_options = [
-        "shared=True"
-        ]
+    options = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = {"shared": False, "fPIC": True}
 
 
     def _configure_cmake(self):
