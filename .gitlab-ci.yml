@@ -106,9 +106,9 @@ build-gcc8:
       - rm -rf *
 
 test-package-gcc8:
-    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    <<: *test_package_definition           # Merge the contents of the 'job_definition' alias
     image: conanio/gcc8
 
 test-package-gcc7:
-    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    <<: *test_package_definition           # Merge the contents of the 'job_definition' alias
     image: conanio/gcc7
