@@ -11,19 +11,28 @@ build-gcc:
       - echo Working directory $PWD
       - sudo apt update
       - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-      - wget https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
+      - wget -q https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
       - mkdir -p $HOME/.local/opt
       - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
       - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
+      - mkdir -p $HOME/.conan_server
+      - cp conan_server/server.conf $HOME/.conan_server
+      - conan_server &
+      - conan remote add local http://localhost:9300
     script:
       - echo $USER    ---   $HOME
       - echo Working directory $PWD
       - mkdir -p build && cd build
-      - cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local
+      - cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
       - cmake --build .
       - ctest
       - cmake --build . --target install
+      - cd ..
+      - conan create . template/testing
+      - echo yes | conan upload cpp_library_template* -r=local
+      - conan search "*" -r=local
     artifacts:
       paths:
         - build/local
+        - /home/conan/.conan_server
       expire_in: 1 week
