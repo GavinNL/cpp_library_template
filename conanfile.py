@@ -17,9 +17,9 @@ class CppLibraryTemplateConan(ConanFile):
         "shared": [True, False]
         }
 
-    default_options = dict({
-        "shared": True
-        })
+    default_options = [
+        "shared=True"
+        ]
 
 
     def _configure_cmake(self):
