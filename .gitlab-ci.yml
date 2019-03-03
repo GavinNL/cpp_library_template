@@ -2,7 +2,7 @@ stages:
 - test
 
 build-gcc:
-    image: lasote/conangcc7
+    image: conanio/gcc7
     stage: test
 #    tags:
 #      - linux
