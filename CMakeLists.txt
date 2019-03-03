@@ -42,6 +42,7 @@ set(PROJECT_NAMESPACE         foo  )  # The project namespace. Library targets
 ################################################################################
 
 
+include(cmake/functions.cmake)
 
 ################################################################################
 # Sub libraries.
