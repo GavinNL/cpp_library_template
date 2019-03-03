@@ -13,7 +13,7 @@ build-gcc:
       - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
       - wget https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
       - mkdir -p $HOME/.local/opt
-      - tar -xvzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
+      - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
       - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
     script:
       - echo $USER    ---   $HOME

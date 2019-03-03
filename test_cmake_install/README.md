@@ -14,7 +14,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/tmp/cpp_library_template -DBUILD_SHARED_LIBS:BO
 cmake --build .
 cmake --build . --target install
 
-# Delete the build directory to make sure we dont accidently link to the build
+# Delete the build directory to make sure we don't accidentally link to the build
 # folder instead.
 cd ..
 rm -rf build
