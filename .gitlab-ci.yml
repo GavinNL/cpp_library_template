@@ -88,12 +88,6 @@ build-gcc8:
       # Add the server as a remote
       - conan remote add local http://localhost:9300
       - conan remote list
-
-
-build-gcc8:
-    <<: *job_definition           # Merge the contents of the 'job_definition' alias
-    image: conanio/gcc8
-
     script:
       - mkdir build && cd build
       - conan install ../test_cmake_install/conan_cmake_generator --build missing
@@ -110,3 +104,11 @@ build-gcc8:
       - cmake ../test_cmake_install/conan_cmake_find_package_generator
       - cmake --build .
       - rm -rf *
+
+test-package-gcc8:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc8
+
+test-package-gcc7:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc7
