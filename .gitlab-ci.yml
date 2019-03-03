@@ -4,8 +4,8 @@ stages:
 build-gcc:
     image: lasote/conangcc7
     stage: test
-    tags:
-      - linux
+#    tags:
+#      - linux
     before_script:
       - echo $USER    ---   $HOME
       - echo Working directory $PWD
