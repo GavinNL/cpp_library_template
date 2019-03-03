@@ -59,7 +59,7 @@ build-gcc8:
     <<: *job_definition           # Merge the contents of the 'job_definition' alias
     image: conanio/gcc8
 
-.test_package: &job_definition
+.test_package: &test_package_definition
     image: conanio/gcc7
     stage: test
     dependencies:
@@ -67,7 +67,6 @@ build-gcc8:
       - build-gcc6
       - build-gcc7
       - build-gcc8
-
     before_script:
       - sudo apt update
       - sudo apt install tree
@@ -90,14 +89,24 @@ build-gcc8:
       - conan remote add local http://localhost:9300
       - conan remote list
 
+
+build-gcc8:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc8
+
     script:
-      - echo $USER    ---   $HOME
-      - echo Working directory $PWD
       - mkdir build && cd build
       - conan install ../test_cmake_install/conan_cmake_generator --build missing
       - cmake ../test_cmake_install/conan_cmake_generator
       - cmake --build .
-#    artifacts:
-#      paths:
-#        - artifacts/*
-#      expire_in: 1 week
+      - rm -rf *
+      #
+      - conan install ../test_cmake_install/conan_cmake_paths_generator --build missing
+      - cmake ../test_cmake_install/conan_cmake_paths_generator
+      - cmake --build .
+      - rm -rf *
+      #
+      - conan install ../test_cmake_install/conan_cmake_find_package_generator --build missing
+      - cmake ../test_cmake_install/conan_cmake_find_package_generator
+      - cmake --build .
+      - rm -rf *
