@@ -28,11 +28,18 @@ stages:
     script:
       - echo $USER    ---   $HOME
       - echo Working directory $PWD
+      ### Test that we can build the library properly
       - mkdir -p build && cd build
-      - cmake .. -DCMAKE_INSTALL_PREFIX=artifacts/${CI_JOB_NAME}
+      - cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/local
       - cmake --build .
       - ctest
       - sudo cmake --build . --target install
+      ##  Test that we can build the test application
+      ##  and the find_package method works correctly.
+      - rm -rf *
+      - cmake ../test_cmake_install/cmake -D CMAKE_PREFIX_PATH=$HOME/local
+      - cmake --build .
+      ## Build the Conan package and upload it to the local repo.
       - cd ..
       - conan user -p demo demo -r=local
       - conan create . local/testing
@@ -61,23 +68,23 @@ build-gcc8:
 
 build-clang60:
     <<: *job_definition
-    image: build-conanio/clang60
+    image: conanio/clang60
 
 build-clang40:
     <<: *job_definition
-    image: build-conanio/clang40
+    image: conanio/clang40
 
 build-clang50:
     <<: *job_definition
-    image: build-conanio/clang50
+    image: conanio/clang50
 
 build-clang7:
     <<: *job_definition
-    image: build-conanio/clang7
+    image: conanio/clang7
 
 build-clang39:
     <<: *job_definition
-    image: build-conanio/clang39
+    image: conanio/clang39
 
 
 ###############################################################################
