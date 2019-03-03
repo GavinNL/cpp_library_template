@@ -1,5 +1,5 @@
 [requires]
-foo/0.1@gavin/testing
+foo/0.1@local/testing
 
 [generators]
 cmake

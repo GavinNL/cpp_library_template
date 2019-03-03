@@ -38,8 +38,8 @@ build-gcc:
       - sudo cmake --build . --target install
       - cd ..
       - conan user -p demo demo -r=local
-      - conan create . template/testing
-      - conan upload cpp_library_template* -r=local -c --all
+      - conan create . local/testing
+      - conan upload foo* -r=local -c --all
       - conan search "*" -r=local
     artifacts:
       paths:
@@ -51,7 +51,7 @@ test_package:
     image: conanio/gcc7
     stage: test
     dependencies:
-      - build-gcc    
+      - build-gcc
 
     before_script:
       - ls
