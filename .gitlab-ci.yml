@@ -20,6 +20,7 @@ build-gcc:
       - conan_server &
       - sleep 3
       - find $HOME/.conan_server
+      - cat $HOME/.conan_server/server.conf
       - conan remote add local http://localhost:9300
       - conan remote list
 
@@ -33,7 +34,7 @@ build-gcc:
       - sudo cmake --build . --target install
       - cd ..
       - conan create . template/testing
-      - echo yes | conan upload cpp_library_template* -r=local
+      - conan upload cpp_library_template* -r=local -c
       - conan search "*" -r=local
     artifacts:
       paths:
