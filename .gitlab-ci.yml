@@ -18,7 +18,11 @@ build-gcc:
       - mkdir -p $HOME/.conan_server
       - cp conan_server/server.conf $HOME/.conan_server
       - conan_server &
+      - sleep 3
+      - find $HOME/.conan_server
       - conan remote add local http://localhost:9300
+      - conan remote list
+
     script:
       - echo $USER    ---   $HOME
       - echo Working directory $PWD
