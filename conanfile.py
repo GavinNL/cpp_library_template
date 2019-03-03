@@ -2,12 +2,12 @@ from conans import ConanFile, CMake
 
 
 class CppLibraryTemplateConan(ConanFile):
-    name = "cpp_library_template"
+    name = "foo"
     version = "0.1"
-    license = "<Put the package license here>"
+    license = "Unlicense"
     author = "GavinNL"
     url = "http://github.com/GavinNL/cpp_library_template"
-    description = "<Description of Hello here>"
+    description = "A simple C++ Library Template."
     topics = ("<Put some tag here>", "<here>", "<and here>")
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
@@ -19,7 +19,9 @@ class CppLibraryTemplateConan(ConanFile):
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        cmake.definitions["SOME_DEFINITION"] = True
+
+        cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
+
         cmake.configure()
 
         return cmake
@@ -30,15 +32,17 @@ class CppLibraryTemplateConan(ConanFile):
         cmake.build()
 
     def package(self):
+        '''
+            Create a package using "cmake --build . --target install"
+            All installation files are defined in the CMakeLists.txt file rather
+            than in the conan package.
+        '''
         cmake = self._configure_cmake()
         cmake.install()
-        #self.copy("*")
-        #self.copy("*.h", dst="include", src="src")
-        #self.copy("*.lib", dst="lib", keep_path=False)
-        #self.copy("*.dll", dst="bin", keep_path=False)
-        #self.copy("*.dylib*", dst="lib", keep_path=False)
-        #self.copy("*.so", dst="lib", keep_path=False)
-        #self.copy("*.a", dst="lib", keep_path=False)
+
 
     def package_info(self):
-        self.cpp_info.libs = ["hello"]
+        # These libraries are required when using the
+        # following generators:
+        #  cmake, cmake_paths, cmake_
+        self.cpp_info.libs = ["dog", "cat", "bar"]

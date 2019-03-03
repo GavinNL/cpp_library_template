@@ -21,9 +21,8 @@ rm -rf build
 
 # Build the test library and point the CMAKE_PREFIX_PATH to the location we
 # installed the library to.
-cd test_cmake_install
+cd test_cmake_install/cmake
 mkdir build && cd build
-
 cmake .. -DCMAKE_PREFIX_PATH=/tmp/cpp_library_template
 cmake --build .
 
