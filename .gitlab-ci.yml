@@ -15,7 +15,8 @@ build-gcc:
       - mkdir -p $HOME/.local/opt
       - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
       - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
-      - mkdir -p $HOME/.conan_server
+      - mkdir -p artifacts/{conan_server,local}
+      - ln -s $PWD/artifacts/conan_server $HOME/.conan_server
       - cp .ci-files/conan_server/server.conf $HOME/.conan_server
       - conan_server &
       - sleep 3
@@ -39,6 +40,5 @@ build-gcc:
       - conan search "*" -r=local
     artifacts:
       paths:
-        - build/local/*
-        - /home/conan/.conan_server/*
+        - artifacts/*
       expire_in: 1 week
