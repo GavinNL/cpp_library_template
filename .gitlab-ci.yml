@@ -16,7 +16,7 @@ build-gcc:
       - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
       - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
       - mkdir -p $HOME/.conan_server
-      - cp conan_server/server.conf $HOME/.conan_server
+      - cp .ci-files/conan_server/server.conf $HOME/.conan_server
       - conan_server &
       - sleep 3
       - find $HOME/.conan_server
@@ -36,9 +36,9 @@ build-gcc:
       - conan user -p demo demo -r=local
       - conan create . template/testing
       - conan upload cpp_library_template* -r=local -c
-      - conan search "*" -r=local
+      - conan search "*" -r=local --all
     artifacts:
       paths:
-        - build/local
-        - /home/conan/.conan_server
+        - build/local/*
+        - /home/conan/.conan_server/*
       expire_in: 1 week
