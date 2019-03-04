@@ -6,19 +6,24 @@ from https://github.com/forexample/package-example.
 
 # Features
 
-* Multimodule library. Two libraries wrapped in a single namespace: `foo::bar` and `foo::cat`
+* Multimodule library: Three libraries wrapped in a single namespace: `foo::bar`, `foo::cat` and `food::dog`
 * Auto-generated EXPORT headers for Windows DLLs
 * Auto-generated CMake config files for installation
 * Unit tests
+* Conan Package Manager Integration
+* Gitlab-CI integration
+  * Builds the library with gcc/clang verions
+  * Tests that the find_package() method works
+  * Builds the Conan Package
+  * Tests the cmake, cmake_paths, and cmake_find_package generators work
 * **[to do]** CPack generation.
-* **[to do]** Conan integration
-* **[to do]** gitlab-ci, appveyor, travis integration
 
 
 # Compiling
 
 ```Bash
 
+# Build, test and install the library
 git clone https://github.com/GavinNL/cpp_library_template
 cd cpp_library_template
 mkdir build && cd build
@@ -27,6 +32,9 @@ cmake --build .
 ctest -C Debug
 cmake --build . --target install
 
+# Build an application that links to this one using.
+# Use the find_package(foo) method to find where the installation
+# is.
 cd ..
 rm -rf build
 cd test_cmake_install

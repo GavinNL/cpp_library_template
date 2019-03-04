@@ -1,29 +1,147 @@
 stages:
+- build
 - test
 
-build-gcc:
-    image: lasote/conangcc7
-    stage: test
-    tags:
-      - linux
+.build_template: &job_definition
+    image: conanio/gcc7
+    stage: build
     before_script:
-      - echo $USER    ---   $HOME
-      - echo Working directory $PWD
+      - env
       - sudo apt update
       - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-      - wget https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
+      - wget -q https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
       - mkdir -p $HOME/.local/opt
-      - tar -xvzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
+      - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
       - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
+      #
+      # Run a conan server in the artifacts/conan_server folder by
+      # making a symlink at $HOME/.conan_server -> artifacts/conan_server
+      - mkdir -p artifacts/{conan_server,local}
+      - ln -s $PWD/artifacts/conan_server $HOME/.conan_server
+      - cp .ci-files/conan_server/server.conf $HOME/.conan_server
+      - conan_server &
+      - sleep 3
+      # Add the server as a remote
+      - conan remote add local http://localhost:9300
+      - conan remote list
+
     script:
       - echo $USER    ---   $HOME
       - echo Working directory $PWD
+      ### Test that we can build the library properly
       - mkdir -p build && cd build
-      - cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local
+      - cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/local
       - cmake --build .
       - ctest
-      - cmake --build . --target install
+      - sudo cmake --build . --target install
+      ##  Test that we can build the test application
+      ##  and the find_package method works correctly.
+      - rm -rf *
+      - cmake ../test_cmake_install/cmake -D CMAKE_PREFIX_PATH=$HOME/local
+      - cmake --build .
+      ## Build the Conan package and upload it to the local repo.
+      - cd ..
+      - conan user -p demo demo -r=local
+      - conan create . local/testing
+      - conan upload foo* -r=local -c --all
+      - conan search "*" -r=local
     artifacts:
       paths:
-        - build/local
+        - artifacts/*
       expire_in: 1 week
+
+build-gcc5:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc5
+
+build-gcc6:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc6
+
+build-gcc7:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc7
+
+build-gcc8:
+    <<: *job_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc8
+
+build-clang60:
+    <<: *job_definition
+    image: conanio/clang60
+
+build-clang40:
+    <<: *job_definition
+    image: conanio/clang40
+
+build-clang50:
+    <<: *job_definition
+    image: conanio/clang50
+
+build-clang7:
+    <<: *job_definition
+    image: conanio/clang7
+
+build-clang39:
+    <<: *job_definition
+    image: conanio/clang39
+
+
+###############################################################################
+# The test package stage tests whether the different Conan generators work
+# correctly with the
+###############################################################################
+.test_package: &test_package_definition
+    image: conanio/gcc7
+    stage: test
+    dependencies:
+      - build-gcc5
+      - build-gcc6
+      - build-gcc7
+      - build-gcc8
+    before_script:
+      - sudo apt update
+      - sudo apt install tree
+      - ls artifacts
+      - tree artifacts -d
+      - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+      - wget -q https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
+      - mkdir -p $HOME/.local/opt
+      - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
+      - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
+      #
+      # Run a conan server in the artifacts/conan_server folder by
+      # making a symlink at $HOME/.conan_server -> artifacts/conan_server
+      - mkdir -p artifacts/{conan_server,local}
+      - ln -s $PWD/artifacts/conan_server $HOME/.conan_server
+      - cp .ci-files/conan_server/server.conf $HOME/.conan_server
+      - conan_server &
+      - sleep 3
+      # Add the server as a remote
+      - conan remote add local http://localhost:9300
+      - conan remote list
+    script:
+      # Test the Conan cmake generator
+      - mkdir build && cd build
+      - conan install ../test_cmake_install/conan_cmake_generator --build missing
+      - cmake ../test_cmake_install/conan_cmake_generator
+      - cmake --build .
+      - rm -rf *
+      # Test the Conan cmake_paths generator
+      - conan install ../test_cmake_install/conan_cmake_paths_generator --build missing
+      - cmake ../test_cmake_install/conan_cmake_paths_generator
+      - cmake --build .
+      - rm -rf *
+      # Test the Conan find_package generator
+      - conan install ../test_cmake_install/conan_cmake_find_package_generator --build missing
+      - cmake ../test_cmake_install/conan_cmake_find_package_generator
+      - cmake --build .
+      - rm -rf *
+
+test-package-gcc8:
+    <<: *test_package_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/gcc8
+
+test-package-clang60:
+    <<: *test_package_definition           # Merge the contents of the 'job_definition' alias
+    image: conanio/clang60

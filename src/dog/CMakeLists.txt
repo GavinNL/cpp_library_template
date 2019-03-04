@@ -2,17 +2,19 @@
 # Set minimum version of CMake.
 cmake_minimum_required(VERSION 3.13)
 
-project(bar  VERSION  1.2.3)
+project(dog  VERSION  1.2.3)
 
-create_library(NAME  bar
+create_library(NAME  dog
                NAMESPACE foo
                SOURCES
-                   bar.cpp
+                   dog.cpp
+               LINKED_TARGETS
+                   foo::cat foo::bar
                PUBLIC_INCLUDE_PATHS
                    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
                    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated_headers>"
                EXPORT_FILE_PATH
-                   "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/foo/bar/BAR_EXPORT.h"
+                   "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/foo/dog/DOG_EXPORT.h"
  )
 
  # Introduce variables:
@@ -25,7 +27,7 @@ create_library(NAME  bar
  #   * include/foo/bar/bar.h -> <prefix>/include/NAMESPACE/LIBRARY_NAME/*.h
  #   * include/foo/bar/bar.h -> <prefix>/include/foo/bar/bar.h
  install(
-     DIRECTORY   "${CMAKE_SOURCE_DIR}/include/foo/bar"
+     DIRECTORY   "${CMAKE_SOURCE_DIR}/include/foo/dog"
      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/foo/"
      FILES_MATCHING PATTERN "*"
  )
@@ -35,8 +37,8 @@ create_library(NAME  bar
  #            <prefix>/include/${NAMESPACE}/LIBRARY_NAME/LIBRARY_NAME_export.h
  install(
      FILES
-         "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/foo/bar/BAR_EXPORT.h"
-     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/foo/bar"
+         "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/foo/dog/DOG_EXPORT.h"
+     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/foo/dog"
  )
 
 ################################################################################

@@ -42,6 +42,7 @@ set(PROJECT_NAMESPACE         foo  )  # The project namespace. Library targets
 ################################################################################
 
 
+include(cmake/functions.cmake)
 
 ################################################################################
 # Sub libraries.
@@ -51,19 +52,7 @@ set(PROJECT_NAMESPACE         foo  )  # The project namespace. Library targets
 #  for example, the bar libarry will have a target called foo::bar
 ################################################################################
 
-# Macro to find all subdirectories.
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child} )
-      LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
-
-SUBDIRLIST(sub_modules "${CMAKE_CURRENT_SOURCE_DIR}/src")
+directory_list(sub_modules "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 FOREACH(subdir ${sub_modules})
  add_subdirectory(src/${subdir})
@@ -77,7 +66,7 @@ add_subdirectory(test)
 
 
 ################################################################################
-# Installation of the library and all it's sub components
+# Installation of the library and all it's sub components. No need to edit this.
 ################################################################################
 # Get the Default installation folders:
 # * CMAKE_INSTALL_LIBDIR

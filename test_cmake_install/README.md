@@ -14,16 +14,15 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/tmp/cpp_library_template -DBUILD_SHARED_LIBS:BO
 cmake --build .
 cmake --build . --target install
 
-# Delete the build directory to make sure we dont accidently link to the build
+# Delete the build directory to make sure we don't accidentally link to the build
 # folder instead.
 cd ..
 rm -rf build
 
 # Build the test library and point the CMAKE_PREFIX_PATH to the location we
 # installed the library to.
-cd test_cmake_install
+cd test_cmake_install/cmake
 mkdir build && cd build
-
 cmake .. -DCMAKE_PREFIX_PATH=/tmp/cpp_library_template
 cmake --build .
 
