@@ -10,12 +10,12 @@
 #
 # This Lists file was modified from https://github.com/forexample/package-example
 #
-# This file creates project 'Foo' with two library targets 'bar' and 'baz'.
-# Target 'bar' depends on 'baz'. After installation this project can be found
+# This file creates project 'Foo' with two library targets 'bar' and 'cat'.
+# Target 'cat' depends on 'bar'. After installation this project can be found
 # by 'find_package(... CONFIG)' command:
 #
-#    find_package(Foo CONFIG REQUIRED)
-#    target_link_libraries(... Foo::bar)
+#    find_package(foo CONFIG REQUIRED)
+#    target_link_libraries(... foo::bar)
 #
 # Note that requirements propagated automatically, for example:
 #   * Foo::baz linked automatically
@@ -42,6 +42,7 @@ set(PROJECT_NAMESPACE         foo  )  # The project namespace. Library targets
 ################################################################################
 
 
+include(cmake/functions.cmake)
 
 ################################################################################
 # Sub libraries.
@@ -51,32 +52,21 @@ set(PROJECT_NAMESPACE         foo  )  # The project namespace. Library targets
 #  for example, the bar libarry will have a target called foo::bar
 ################################################################################
 
-# Macro to find all subdirectories.
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child} )
-      LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
-
-SUBDIRLIST(sub_modules "${CMAKE_CURRENT_SOURCE_DIR}/src")
+directory_list(sub_modules "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 FOREACH(subdir ${sub_modules})
- #message( "==== ${subdir} ====" )
  add_subdirectory(src/${subdir})
 ENDFOREACH()
 
 ################################################################################
 
 
+enable_testing()
+add_subdirectory(test)
 
 
 ################################################################################
-# Installation of the library and all it's sub components
+# Installation of the library and all it's sub components. No need to edit this.
 ################################################################################
 # Get the Default installation folders:
 # * CMAKE_INSTALL_LIBDIR

@@ -1,14 +1,22 @@
-#include <foo/cat/cat.hpp>
+#include <foo/cat/cat.h>
+#include <foo/bar/bar.h>
 
 namespace foo {
 
-void cat::cpp_say() {
-#if (FOO_BAZ_DEBUG)
-  const char* m = "Baz.cpp (Debug)";
-#else
-  const char* m = "Baz.cpp (Not debug)";
-#endif
-  std::cout << m << std::endl;
+cat::cat()
+{
+    std::cout << "Cat constructed" << std::endl;
+}
+
+cat::~cat()
+{
+    std::cout << "Cat destroyed" << std::endl;
+}
+
+void cat::call_bar()
+{
+    std::cout << "Cat calling bar()" << std::endl;
+    bar();
 }
 
 } // namespace foo
