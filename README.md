@@ -54,3 +54,30 @@ export LD_LIBRARY_PATH=/tmp/cpp_library_template/lib
 ./test-cat
 
 ```
+
+# Conan Package Manager
+
+This library comes with a `conanfile.py` to build it into a Conan package so that
+it may be used by external applications/libraries.
+
+## Create Conan Packages
+
+Creating a Conan package is relatively easy. Simple cd into the source directory
+and execute the conan create function.
+
+```bash
+git clone https://github.com/GavinNL/cpp_library_template
+cd cpp_library_template
+
+conan create . foo/testing
+```
+
+## Using the Conan Package
+
+Once you have created the Conan package, you can then link to it from another
+application or library. There are three examples you can look at in the
+`test_cmake_install` folder.
+
+* Using [cmake generator](test_cmake_install/conan_cmake_generator)
+* Using [cake_paths generator](test_cmake_install/conan_cmake_paths_generator)
+* Using [cmake_find_package generator](test_cmake_install/conan_cmake_find_package_generator)
