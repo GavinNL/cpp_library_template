@@ -3,10 +3,16 @@
 This is a C++ Library Template using modern CMake. It's list file is modified
 from https://github.com/forexample/package-example.
 
+| Branch | Gitlab-CI |
+|--------|-----------|
+| dev    | ![https://gitlab.com/GavinNL/cpp_library_template/pipelines/](https://gitlab.com/GavinNL/cpp_library_template/badges/dev/build.svg)  |
+| master | ![https://gitlab.com/GavinNL/cpp_library_template/pipelines/](https://gitlab.com/GavinNL/cpp_library_template/badges/master/build.svg)  |
+
+
 
 # Features
 
-* Multimodule library: Three libraries wrapped in a single namespace: `foo::bar`, `foo::cat` and `food::dog`
+* Multimodule library: Three libraries wrapped in a single namespace: `foo::bar`, `foo::cat` and `foo::dog`
 * Auto-generated EXPORT headers for Windows DLLs
 * Auto-generated CMake config files for installation
 * Unit tests
