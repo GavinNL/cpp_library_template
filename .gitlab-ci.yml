@@ -121,17 +121,18 @@ build-clang39:
       - conan remote add local http://localhost:9300
       - conan remote list
     script:
+      # Test the Conan cmake generator
       - mkdir build && cd build
       - conan install ../test_cmake_install/conan_cmake_generator --build missing
       - cmake ../test_cmake_install/conan_cmake_generator
       - cmake --build .
       - rm -rf *
-      #
+      # Test the Conan cmake_paths generator
       - conan install ../test_cmake_install/conan_cmake_paths_generator --build missing
       - cmake ../test_cmake_install/conan_cmake_paths_generator
       - cmake --build .
       - rm -rf *
-      #
+      # Test the Conan find_package generator
       - conan install ../test_cmake_install/conan_cmake_find_package_generator --build missing
       - cmake ../test_cmake_install/conan_cmake_find_package_generator
       - cmake --build .
