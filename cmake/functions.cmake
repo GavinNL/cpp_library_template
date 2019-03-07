@@ -148,3 +148,103 @@ function(create_library)
     endforeach()
 
 endfunction()
+
+
+function(create_executable)
+    set(options)
+    set(args NAME
+             )
+
+    set(list_args
+            LINKED_TARGETS
+            SOURCES
+            PUBLIC_DEFINITIONS
+            PRIVATE_DEFINITIONS
+            INCLUDE_PATHS)
+
+    cmake_parse_arguments(
+        PARSE_ARGV 0
+        lib
+        "${options}"
+        "${args}"
+        "${list_args}"
+    )
+    message("Building Executable: ${lib_NAME}")
+    add_executable( ${lib_NAME} ${lib_SOURCES} )
+
+    target_link_libraries( ${lib_NAME} PUBLIC ${lib_LINKED_TARGETS} )
+
+    target_include_directories( ${lib_NAME}
+                                PUBLIC
+                                    ${lib_INCLUDE_PATHS}
+                                    ${lib_PUBLIC_INCLUDE_PATHS}
+                                PRIVATE
+                                    ${lib_PRIVATE_INCLUDE_PATHS}
+                                )
+
+    target_compile_definitions( ${lib_NAME}
+                                PUBLIC
+                                    ${lib_PUBLIC_DEFINITIONS}
+                                PRIVATE
+                                    ${lib_PRIVATE_DEFINITIONS}
+                               )
+
+################################################################################
+
+    foreach(arg IN LISTS lib_UNPARSED_ARGUMENTS)
+        message(WARNING "Unparsed argument: ${arg}")
+    endforeach()
+
+endfunction(create_executable)
+
+
+
+function(create_module)
+    set(options)
+    set(args NAME
+             )
+
+    set(list_args
+            LINKED_TARGETS
+            SOURCES
+            PUBLIC_DEFINITIONS
+            PRIVATE_DEFINITIONS
+            INCLUDE_PATHS)
+
+    cmake_parse_arguments(
+        PARSE_ARGV 0
+        lib
+        "${options}"
+        "${args}"
+        "${list_args}"
+    )
+    message("Building Module: ${lib_NAME}")
+
+    add_library( ${lib_NAME} MODULE ${lib_SOURCES} )
+
+    target_link_libraries( ${lib_NAME} PUBLIC ${lib_LINKED_TARGETS} )
+    set_target_properties( ${lib_NAME} PROPERTIES SUFFIX ".so")
+    set_target_properties( ${lib_NAME} PROPERTIES PREFIX "")
+
+    target_include_directories( ${lib_NAME}
+                                PUBLIC
+                                    ${lib_INCLUDE_PATHS}
+                                    ${lib_PUBLIC_INCLUDE_PATHS}
+                                PRIVATE
+                                    ${lib_PRIVATE_INCLUDE_PATHS}
+                                )
+
+    target_compile_definitions( ${lib_NAME}
+                                PUBLIC
+                                    ${lib_PUBLIC_DEFINITIONS}
+                                PRIVATE
+                                    ${lib_PRIVATE_DEFINITIONS}
+                               )
+
+################################################################################
+
+    foreach(arg IN LISTS lib_UNPARSED_ARGUMENTS)
+        message(WARNING "Unparsed argument: ${arg}")
+    endforeach()
+
+endfunction()
