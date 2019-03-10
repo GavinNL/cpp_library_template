@@ -8,9 +8,9 @@ stages:
     before_script:
       - env
       - sudo apt update
-      - chmod +x ./.ci-files/install_conan.sh
-      - chmod +x ./.ci-files/install_cmake.sh
-      - chmod +x ./.ci-files/run_conan_server.sh
+      - sudo chmod +x ./.ci-files/install_conan.sh
+      - sudo chmod +x ./.ci-files/install_cmake.sh
+      - sudo chmod +x ./.ci-files/run_conan_server.sh
       - ./.ci-files/install_conan.sh
       - ./.ci-files/install_cmake.sh
       #
