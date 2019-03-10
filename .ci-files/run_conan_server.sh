@@ -3,6 +3,7 @@
 set -e
 set -x
 
-ln -s .ci-files/conan_server $HOME/.conan_server
+mkdir -p $HOME/.conan_server
+cp .ci-files/conan_server/* $HOME/.conan_server
 conan_server &
 sleep 3
