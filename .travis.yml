@@ -49,6 +49,7 @@ matrix:
 install:
   - chmod +x .ci-files/install_conan.sh
   - ./.ci-files/install_conan.sh
+  - ./.ci-files/install_cmake_3.13.sh
 
 script:
   - chmod +x .ci-files/run.sh
