@@ -8,20 +8,21 @@ stages:
     before_script:
       - env
       - sudo apt update
-      - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-      - wget -q https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
-      - mkdir -p $HOME/.local/opt
-      - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz -C $HOME/.local/opt
-      - export PATH=$HOME/.local/opt/cmake-3.13.4-Linux-x86_64/bin:$PATH
+      - chmod +x ./.ci-files/install_conan.sh
+      - chmod +x ./.ci-files/install_cmake.sh
+      - chmod +x ./.ci-files/run_conan_server.sh
+      - ./.ci-files/install_conan.sh
+      - ./.ci-files/install_cmake.sh
       #
       # Run a conan server in the artifacts/conan_server folder by
       # making a symlink at $HOME/.conan_server -> artifacts/conan_server
-      - mkdir -p artifacts/{conan_server,local}
-      - ln -s $PWD/artifacts/conan_server $HOME/.conan_server
-      - cp .ci-files/conan_server/server.conf $HOME/.conan_server
-      - conan_server &
-      - sleep 3
+      #- mkdir -p artifacts/{conan_server,local}
+      #- ln -s $PWD/artifacts/conan_server $HOME/.conan_server
+      #- cp .ci-files/conan_server/server.conf $HOME/.conan_server
+      #- conan_server &
+      #- sleep 3
       # Add the server as a remote
+      - ./.ci-files/run_conan_server.sh
       - conan remote add local http://localhost:9300
       - conan remote list
 
