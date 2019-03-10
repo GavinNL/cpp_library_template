@@ -11,4 +11,6 @@ VERSION=3.13.4
 
 wget -q https://github.com/Kitware/CMake/releases/download/v${VERSION}/cmake-${VERSION}-Linux-x86_64.tar.gz -O cmake.tar.gz
 tar -xzf cmake.tar.gz
-sudo cp -r cmake-${VERSION}*/* /
+sudo cp -r cmake-${VERSION}*/* /usr
+which cmake
+cmake --version
