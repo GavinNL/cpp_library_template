@@ -105,6 +105,10 @@ build-clang39:
       - conan remote add local http://localhost:9300
       - conan remote list
     script:
+      # Create and uplaod the recipe to the repository
+      - conan user -p demo demo -r=local
+      - conan create . local/testing
+      - conan upload foo* -r=local -c --all
       # Test the Conan cmake generator
       - mkdir build && cd build
       - conan install ../test_cmake_install/conan_cmake_generator --build missing
