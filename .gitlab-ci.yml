@@ -1,6 +1,25 @@
 stages:
+- analysis
 - build
 - test
+
+cppcheck:
+  image: ubuntu:bionic
+  stage: analysis
+  before_script:
+    - apt update
+    - apt install -y --no-install-recommends cppcheck=1.82-1 python3-pygments python-pygments
+    - cppcheck --version
+  script:
+    - mkdir cppcheck
+    #- cppcheck . -I include/ --verbose --enable=all --inconclusive --language=c++ --error-exitcode=1
+    - cppcheck . -I include/ --enable=all --inconclusive --xml-version=2 --force --library=windows,posix,gnu . 2> cppcheck/result.xml
+    - cppcheck-htmlreport --source-encoding="iso8859-1" --title="my project name" --source-dir . --report-dir=cppcheck --file=cppcheck/result.xml
+  artifacts:
+    paths:
+      - cppcheck/
+    expire_in: 1 week
+
 
 .build_template: &job_definition
     image: conanio/gcc7
@@ -32,6 +51,10 @@ stages:
       - rm -rf *
       - cmake ../test_cmake_install/cmake -D CMAKE_PREFIX_PATH=$HOME/local
       - cmake --build .
+      - ctest
+      ##
+      - mkdir -p artifacts/coverage
+      - gcovr . -r .. --html-details --html -o artifacts/coverage/index.html -e ../test/third_party
       ## Build the Conan package and upload it to the local repo.
       - cd ..
       - conan user -p demo demo -r=local
