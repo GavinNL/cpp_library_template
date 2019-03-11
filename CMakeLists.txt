@@ -61,6 +61,14 @@ ENDFOREACH()
 ################################################################################
 
 
+if(CMAKE_COMPILER_IS_GNUCC)
+    option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" TRUE)
+endif()
+
+if(ENABLE_COVERAGE)
+    set(COVERAGE_FLAGS --coverage -g -O0 -fprofile-arcs -ftest-coverage)
+endif()
+
 enable_testing()
 add_subdirectory(test)
 

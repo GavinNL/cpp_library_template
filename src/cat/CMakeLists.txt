@@ -8,7 +8,7 @@ create_library(NAME  cat
                NAMESPACE foo
                SOURCES
                    cat.cpp
-               LINKED_TARGETS
+               PUBLIC_LINKED_TARGETS
                    foo::bar
                PUBLIC_INCLUDE_PATHS
                    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"

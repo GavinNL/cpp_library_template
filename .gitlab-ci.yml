@@ -27,6 +27,7 @@ cppcheck:
     before_script:
       - env
       - sudo apt update
+      - sudo apt install -y gcovr
       - sudo chmod +x ./.ci-files/install_conan.sh
       - sudo chmod +x ./.ci-files/install_cmake.sh
       - sudo chmod +x ./.ci-files/run_conan_server.sh
@@ -45,6 +46,8 @@ cppcheck:
       - cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/local
       - cmake --build .
       - ctest
+      - mkdir -p artifacts/coverage
+      - gcovr . -r .. --html-details --html -o artifacts/coverage/index.html -e ../test/third_party
       - sudo cmake --build . --target install
       ##  Test that we can build the test application
       ##  and the find_package method works correctly.
@@ -52,9 +55,6 @@ cppcheck:
       - cmake ../test_cmake_install/cmake -D CMAKE_PREFIX_PATH=$HOME/local
       - cmake --build .
       - ctest
-      ##
-      - mkdir -p artifacts/coverage
-      - gcovr . -r .. --html-details --html -o artifacts/coverage/index.html -e ../test/third_party
       ## Build the Conan package and upload it to the local repo.
       - cd ..
       - conan user -p demo demo -r=local
