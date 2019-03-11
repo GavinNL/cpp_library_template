@@ -5,7 +5,8 @@ set -x
 
 if [[ "$(uname -s)" == 'Darwin' ]]; then
     echo "Darwin!"
-    brew install cmake
+    brew install cmake || true
+    brew upgrade cmake
 else
 
 
