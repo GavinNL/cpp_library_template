@@ -10,12 +10,16 @@ create_library(NAME  dog
                    dog.cpp
                PUBLIC_LINKED_TARGETS
                    foo::cat foo::bar
+                   ${COVERAGE_LIBS}
+               PUBLIC_COMPILE_FEATURES
+                   ${COVERAGE_FLAGS}
                PUBLIC_INCLUDE_PATHS
                    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
                    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated_headers>"
                EXPORT_FILE_PATH
                    "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/foo/dog/DOG_EXPORT.h"
  )
+
 
  # Introduce variables:
  # * CMAKE_INSTALL_LIBDIR
