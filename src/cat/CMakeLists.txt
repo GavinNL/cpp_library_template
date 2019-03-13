@@ -10,9 +10,8 @@ create_library(NAME  cat
                    cat.cpp
                PUBLIC_LINKED_TARGETS
                    foo::bar
+               PRIVATE_LINKED_TARGETS
                    ${COVERAGE_LIBS}
-               PUBLIC_COMPILE_FEATURES
-                   ${COVERAGE_FLAGS}
                PUBLIC_INCLUDE_PATHS
                    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
                    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated_headers>"

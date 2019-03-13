@@ -11,10 +11,8 @@ create_library(NAME  bar
                PUBLIC_INCLUDE_PATHS
                    "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
                    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated_headers>"
-               PUBLIC_LINKED_TARGETS
-                   ${COVERAGE_LIBS}
-               PUBLIC_COMPILE_FEATURES
-                   ${COVERAGE_FLAGS}
+               PRIVATE_LINKED_TARGETS
+                   ${COVERAGE_TARGET}
                EXPORT_FILE_PATH
                    "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/foo/bar/BAR_EXPORT.h"
  )

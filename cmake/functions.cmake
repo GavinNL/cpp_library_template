@@ -128,6 +128,8 @@ function(create_library)
             PRIVATE_INCLUDE_PATHS
             PUBLIC_COMPILE_FEATURES
             PRIVATE_COMPILE_FEATURES
+            PUBLIC_COMPILE_OPTIONS
+            PRIVATE_COMPILE_OPTIONS
         )
 
     cmake_parse_arguments(
@@ -173,6 +175,9 @@ function(create_library)
 
     target_compile_features(${lib_NAME} PUBLIC ${lib_PUBLIC_COMPILE_FEATURES} )
     target_compile_features(${lib_NAME} PRIVATE ${lib_PRIVATE_COMPILE_FEATURES} )
+
+    target_compile_options(${lib_NAME} PUBLIC ${lib_PUBLIC_COMPILE_OPTIONS} )
+    target_compile_options(${lib_NAME} PRIVATE ${lib_PRIVATE_COMPILE_OPTIONS} )
 
     target_link_libraries( ${lib_NAME} PUBLIC ${lib_PUBLIC_LINKED_TARGETS})
     target_link_libraries( ${lib_NAME} PRIVATE ${lib_PRIVATE_LINKED_TARGETS})
@@ -329,6 +334,8 @@ function(create_executable)
              PRIVATE_INCLUDE_PATHS
              PUBLIC_COMPILE_FEATURES
              PRIVATE_COMPILE_FEATURES
+             PUBLIC_COMPILE_OPTIONS
+             PRIVATE_COMPILE_OPTIONS
          )
 
     cmake_parse_arguments(
@@ -374,6 +381,9 @@ function(create_executable)
 
     target_compile_features(${lib_NAME} PUBLIC ${lib_PUBLIC_COMPILE_FEATURES} )
     target_compile_features(${lib_NAME} PRIVATE ${lib_PRIVATE_COMPILE_FEATURES} )
+
+    target_compile_options(${lib_NAME} PUBLIC ${lib_PUBLIC_COMPILE_OPTIONS} )
+    target_compile_options(${lib_NAME} PRIVATE ${lib_PRIVATE_COMPILE_OPTIONS} )
 
 ################################################################################
 
@@ -498,6 +508,8 @@ function(create_header_only_library)
             PRIVATE_INCLUDE_PATHS
             PUBLIC_COMPILE_FEATURES
             PRIVATE_COMPILE_FEATURES
+            PUBLIC_COMPILE_OPTIONS
+            PRIVATE_COMPILE_OPTIONS
         )
 
     cmake_parse_arguments(
@@ -543,6 +555,9 @@ function(create_header_only_library)
 
     target_compile_features(${lib_NAME} INTERFACE ${lib_PUBLIC_COMPILE_FEATURES} )
     target_compile_features(${lib_NAME} INTERFACE ${lib_PRIVATE_COMPILE_FEATURES} )
+
+    target_compile_features(${lib_NAME} INTERFACE ${lib_PUBLIC_COMPILE_OPTIONS} )
+    target_compile_features(${lib_NAME} INTERFACE ${lib_PRIVATE_COMPILE_OPTIONS} )
 
     target_link_libraries( ${lib_NAME} PUBLIC ${PUBLIC_LINKED_TARGETS})
     target_link_libraries( ${lib_NAME} PRIVATE ${PRIVATE_LINKED_TARGETS})
@@ -625,17 +640,17 @@ function(create_test)
     )
     target_compile_options(${testcase} PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/EHsc;$<$<CONFIG:Release>:/Od>>
-        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wno-deprecated;-Wno-float-equal>
+       # $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wno-deprecated;-Wno-float-equal>
         $<$<CXX_COMPILER_ID:GNU>:-Wno-deprecated-declarations>
         ${lib_PUBLIC_COMPILE_FEATURES}
         ${lib_PRIVATE_COMPILE_FEATURES}
     )
     target_include_directories(${testcase} PRIVATE
-        ${PUBLIC_INCLUDE_PATHS}
-        ${PRIVATE_INCLUDE_PATHS}
+        ${lib_PUBLIC_INCLUDE_PATHS}
+        ${lib_PRIVATE_INCLUDE_PATHS}
     )
 
-    target_link_libraries(${testcase} ${lib_PUBLIC_LINKED_TARGETS} ${lib_PRIVATE_LINKED_TARGETS})
+    target_link_libraries(${testcase} ${lib_PUBLIC_LINKED_TARGETS} ${lib_PRIVATE_LINKED_TARGETS} )
     #target_link_libraries(${testcase} --coverage -g -O0 -fprofile-arcs -ftest-coverage)
     #target_compile_options(${testcase} PRIVATE --coverage -g -O0 -fprofile-arcs -ftest-coverage)
 

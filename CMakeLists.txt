@@ -42,8 +42,6 @@ set(PROJECT_NAMESPACE         foo  )  # The project namespace. Library targets
 ################################################################################
 
 
-include(cmake/functions.cmake)
-
 
 
 
@@ -60,51 +58,13 @@ endif()
 ################################################################################
 if(ENABLE_COVERAGE)
 
-    add_library(coverage_ INTERFACE)
-    add_library(cov::cov ALIAS coverage_)
-    target_compile_options(coverage_ INTERFACE --coverage -g -O0 -fprofile-arcs -ftest-coverage)
-    target_link_libraries(coverage_ INTERFACE --coverage -g -O0 -fprofile-arcs -ftest-coverage)
+    include(cmake/coverage.cmake)
 
-    find_program (COV_BIN NAMES notify-send)
-
-    set(COVERAGE_TARGET cov::cov)
-    set(COVERAGE_INSTALL_TARGET coverage_)
-
-    add_custom_target(gcov
-        COMMAND mkdir -p coverage
-        COMMAND ${CMAKE_MAKE_PROGRAM} test
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        )
-
-    add_custom_command(TARGET gcov
-        COMMAND echo "=================== GCOV ===================="
-        COMMAND gcovr . -r ${CMAKE_SOURCE_DIR} --html-details --html -o coverage/index.html -e ${CMAKE_SOURCE_DIR}/test/third_party;
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}  # Need separate command for this line
-        )
-
-   set(COVERAGE_LIBS cov::cov)
 endif()
 
-
-
-################################################################################
-# Add a custom command to create cppcheck reports
-#
-#   make cppcheck
-################################################################################
-add_custom_target(cppcheck)
-
-add_custom_command(TARGET cppcheck
-    COMMAND echo "=================== CPPCHECK ===================="
-    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/cppcheck
-    COMMAND cppcheck . -I include/ --enable=all --inconclusive --xml-version=2 --force --library=windows,posix,gnu . --output-file=${CMAKE_BINARY_DIR}/cppcheck/result.xml
-    COMMAND cppcheck-htmlreport  --title="${PROJECT_NAME}" --source-dir . --report-dir=${CMAKE_BINARY_DIR}/cppcheck --file=${CMAKE_BINARY_DIR}/cppcheck/result.xml
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}  # Need separate command for this line
-    )
-################################################################################
-
-
-
+include(cmake/functions.cmake)
+include(cmake/warnings.cmake)
+include(cmake/cppcheck.cmake)
 
 ################################################################################
 # Sub libraries.
@@ -180,6 +140,7 @@ configure_package_config_file(
   install(
    TARGETS
        ${sub_modules}
+       ${COVERAGE_INSTALL_TARGET}
    EXPORT
        "${TARGETS_EXPORT_NAME}"
    LIBRARY  DESTINATION "${CMAKE_INSTALL_LIBDIR}"
