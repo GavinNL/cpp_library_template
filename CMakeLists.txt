@@ -46,7 +46,7 @@ set(PROJECT_NAMESPACE         foo  )  # The project namespace. Library targets
 
 
 if(CMAKE_COMPILER_IS_GNUCC)
-    option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" TRUE)
+    option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" FALSE)
 endif()
 
 
