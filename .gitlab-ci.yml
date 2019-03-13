@@ -27,7 +27,8 @@ cppcheck:
     before_script:
       - env
       - sudo apt update
-      - sudo apt install -y gcovr
+      - sudo apt install -y python3-pip
+      - sudo pip3 install gcovr
       - sudo chmod +x ./.ci-files/install_conan.sh
       - sudo chmod +x ./.ci-files/install_cmake.sh
       - sudo chmod +x ./.ci-files/run_conan_server.sh
